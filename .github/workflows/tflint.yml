@@ -13,7 +13,8 @@ jobs:
       - uses: hashicorp/setup-terraform@v2
         with:
           terraform_version: 1.1.9
-      - run: terraform init -chdir=./iac
+      - run: terraform init
+        working-directory: iac
       - name: tflint
         uses: reviewdog/action-tflint@master
         with:
