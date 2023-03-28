@@ -107,3 +107,33 @@ resource "aws_cloudwatch_event_target" "main" {
   rule      = aws_cloudwatch_event_rule.main.name
   arn       = aws_lambda_function.main.arn
 }
+
+data "aws_iam_policy_document" "ci" {
+  statement {
+    actions = [
+      "lambda:UpdateFunctionCode"
+    ]
+    resources = [
+      "*"
+    ]
+  }
+}
+
+variable "group_name_ci" {
+  type = string
+}
+
+data "aws_iam_group" "ci" {
+  group_name = var.group_name_ci
+}
+
+resource "aws_iam_policy" "ci" {
+  name        = "UpdateLambdaFunction"
+  description = "the ci role can update Lambda function"
+  policy      = data.aws_iam_policy_document.ci.json
+}
+
+resource "aws_iam_group_policy_attachment" "ci" {
+  group      = data.aws_iam_group.ci.group_name
+  policy_arn = aws_iam_policy.ci.arn
+}
