@@ -111,7 +111,14 @@ resource "aws_cloudwatch_event_target" "main" {
 data "aws_iam_policy_document" "ci" {
   statement {
     actions = [
-      "lambda:UpdateFunctionCode"
+      "lambda:CreateAlias",
+      "lambda:CreateFunction",
+      "lambda:GetFunction",
+      "lambda:GetFunctionConfiguration",
+      "lambda:ListTags",
+      "lambda:UpdateAlias",
+      "lambda:UpdateFunctionCode",
+      "lambda:UpdateFunctionConfiguration"
     ]
     resources = [
       "*"
